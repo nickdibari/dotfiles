@@ -2,4 +2,3 @@
 alias c='clear'
 alias rm='rm -i'
 alias l='ls -l'
-

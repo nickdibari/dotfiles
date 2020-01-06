@@ -22,30 +22,25 @@ for dir in $dotfiles_dirs; do
 
     for file in $dotfiles; do
         filename="dotfiles/$dir/$file"
-        echo "Adding $filename to $HOME"
 
         cp $filename $MAIN_DIRECTORY
         new_filename="$MAIN_DIRECTORY/$file"
 
-        echo "Appending . $new_filename to $MAIN_FILENAME"
+        echo "Appending $new_filename to $MAIN_FILENAME"
         echo ". $new_filename" >> $MAIN_FILENAME
     done
 done
 
 echo "Copying your $BASH_FILE file to /tmp in case of revert"
-cp $BASH_FILE /tmp
+cp ${BASH_FILE} /tmp/bashrc.bak
 
-echo "Appending . $MAIN_FILENAME to user $BASH_FILE"
+echo "Appending $MAIN_FILENAME to user $BASH_FILE"
 echo "" >> $BASH_FILE
 echo "### BEGIN dotfiles MANAGED SECTION" >> $BASH_FILE
 echo ". $MAIN_FILENAME" >> $BASH_FILE
+echo '### END dotfiles MANAGED SECTION' >> $BASH_FILE
 
 echo "Sourcing $BASH_FILE"
 . $BASH_FILE
 
-echo "Adding Git banner to PS1"
-echo "PS1='\d \W \$(__git_ps1 \" (%s)\")\$ '" >> $BASH_FILE
-. $BASH_FILE
-echo "### END dotfiles MANAGED SECTION" >> $BASH_FILE
 
-# PS1='\d \W $(__git_ps1 " (%s)")\$ '

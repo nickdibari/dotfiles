@@ -38,13 +38,9 @@ echo "Appending $MAIN_FILENAME to user $BASH_FILE"
 echo "" >> $BASH_FILE
 echo "### BEGIN dotfiles MANAGED SECTION" >> $BASH_FILE
 echo ". $MAIN_FILENAME" >> $BASH_FILE
+echo '### END dotfiles MANAGED SECTION' >> $BASH_FILE
 
 echo "Sourcing $BASH_FILE"
 . $BASH_FILE
 
-echo "Adding Git banner to PS1"
-echo "PS1='\d \W \$(__git_ps1 \" (%s)\")\$ '" >> $BASH_FILE
-. $BASH_FILE
-echo "### END dotfiles MANAGED SECTION" >> $BASH_FILE
 
-# PS1='\d \W $(__git_ps1 " (%s)")\$ '

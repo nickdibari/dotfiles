@@ -8,5 +8,7 @@ Vagrant.configure("2") do |config|
     vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]  # Disable virtualbox logging
   end
 
-  config.vm.synced_folder ".", "/home/vagrant/dotfiles"
+  config.vm.define "dotfiles" do |dotfiles|
+    dotfiles.vm.synced_folder ".", "/home/vagrant/dotfiles"
+  end
 end

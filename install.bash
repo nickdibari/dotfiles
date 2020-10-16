@@ -1,7 +1,8 @@
-#! /bin/bash
+#!/bin/bash
 
-# install.sh
-# Looks at all files in the dotfiles/ directory and adds them to the current user's .bashrc
+# install.bash
+# Installs the dotfiles into the users home directory and adds the activation script to
+# the .bashrc file
 
 MAIN_DIRECTORY="$HOME/.dotfiles"
 MAIN_FILENAME="$MAIN_DIRECTORY/.activate"

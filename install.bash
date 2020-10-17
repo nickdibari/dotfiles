@@ -41,6 +41,7 @@ echo "### BEGIN dotfiles MANAGED SECTION" >> "$BASH_FILE"
 echo ". $MAIN_FILENAME" >> "$BASH_FILE"
 echo '### END dotfiles MANAGED SECTION' >> "$BASH_FILE"
 
+### Vim Config
 # Install vim config
 echo "Installing awesome vim config"
 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
@@ -49,3 +50,16 @@ sh ~/.vim_runtime/install_awesome_vimrc.sh
 # Add custom vim config
 echo "Installing custom vim config"
 cp configs/vim_config.vim ~/.vim_runtime/my_configs.vim
+
+### tmux Config
+# Install tmux plugin manager
+echo "Installing tmux plugin manager"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Add tmux config file
+echo "Installing tmux config file"
+cp configs/tmux.conf ~/.tmux.conf
+
+# Install tmux plugins
+echo "Installing tmux plugins"
+bash ~/.tmux/plugins/tpm/bin/install_plugins

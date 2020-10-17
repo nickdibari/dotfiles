@@ -66,23 +66,34 @@ echo '### END dotfiles MANAGED SECTION' >> "$BASH_FILE"
 
 ### Vim Config
 if [ "$install_vim" = "1" ]; then
-    # Install vim config
-    echo "Installing awesome vim config"
-    git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
-    sh ~/.vim_runtime/install_awesome_vimrc.sh
+    VIM_DIR="$HOME/.vim_runtime"
+
+    if [ ! -d "$VIM_DIR" ]; then
+        # Install vim config
+        echo "Installing awesome vim config"
+        git clone --depth=1 https://github.com/amix/vimrc.git "$VIM_DIR"
+        sh "$VIM_DIR/install_awesome_vimrc.sh"
+    else
+        echo "Awesome vim config already installed"
+    fi
 
     # Add custom vim config
     echo "Installing custom vim config"
-    cp configs/vim_config.vim ~/.vim_runtime/my_configs.vim
+    cp configs/vim_config.vim "$VIM_DIR/my_configs.vim"
 fi
 
 
 ### tmux Config
 if [ "$install_tmux" = "1" ]; then
+    TMUX_PLUGIN_DIR="$HOME/.tmux/plugins/tpm"
 
-    # Install tmux plugin manager
-    echo "Installing tmux plugin manager"
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    if [ ! -d "$TMUX_PLUGIN_DIR" ]; then
+        # Install tmux plugin manager
+        echo "Installing tmux plugin manager"
+        git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_DIR"
+    else
+        echo "tmux plugin manager already installed"
+    fi
 
     # Add tmux config file
     echo "Installing tmux config file"
@@ -90,5 +101,5 @@ if [ "$install_tmux" = "1" ]; then
 
     # Install tmux plugins
     echo "Installing tmux plugins"
-    bash ~/.tmux/plugins/tpm/bin/install_plugins
+    bash "$TMUX_PLUGIN_DIR/bin/install_plugins"
 fi

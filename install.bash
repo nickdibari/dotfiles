@@ -26,7 +26,6 @@ do
     shift
 done
 
-
 MAIN_DIRECTORY="$HOME/.dotfiles"
 MAIN_FILENAME="$MAIN_DIRECTORY/.activate"
 BASH_FILE="$HOME/.bashrc"
@@ -58,11 +57,17 @@ done
 echo "Copying your $BASH_FILE file to /tmp in case of revert"
 cp "${BASH_FILE}" /tmp/bashrc.bak
 
-echo "Appending $MAIN_FILENAME to user $BASH_FILE"
-echo "" >> "$BASH_FILE"
-echo "### BEGIN dotfiles MANAGED SECTION" >> "$BASH_FILE"
-echo ". $MAIN_FILENAME" >> "$BASH_FILE"
-echo '### END dotfiles MANAGED SECTION' >> "$BASH_FILE"
+if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
+    echo "Adding source of $MAIN_FILENAME to $BASH_FILE"
+    {
+        echo ""
+        echo "### BEGIN dotfiles MANAGED SECTION"
+        echo ". $MAIN_FILENAME"
+        echo '### END dotfiles MANAGED SECTION'
+    } >> "$BASH_FILE"
+else
+    echo "Already have source of $MAIN_FILENAME in $BASH_FILE"
+fi
 
 ### Vim Config
 if [ "$install_vim" = "1" ]; then

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # install.bash
 # Installs the dotfiles into the users home directory and adds the activation script to

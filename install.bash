@@ -6,7 +6,14 @@ set -euo pipefail
 # the .bashrc file
 
 help () {
-    echo "usage: ./install.bash [--install-vim] [--install-tmux]"
+    echo <<HELP "usage: ./install.bash [--install-vim] [--install-tmux]
+Installs dotfile configs to \$HOME/.bashrc
+
+--install-vim   Install vim plugins and config files
+--install-tmux  Install tmux plugins and config files
+    -> Needs tmux to be installed on host
+"
+HELP
 }
 
 install_vim=0

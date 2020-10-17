@@ -41,10 +41,6 @@ echo "### BEGIN dotfiles MANAGED SECTION" >> "$BASH_FILE"
 echo ". $MAIN_FILENAME" >> "$BASH_FILE"
 echo '### END dotfiles MANAGED SECTION' >> "$BASH_FILE"
 
-echo "Sourcing $BASH_FILE"
-source "$BASH_FILE"
-
-
 # Install vim config
 echo "Installing awesome vim config"
 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime

@@ -5,6 +5,28 @@ set -euo pipefail
 # Installs the dotfiles into the users home directory and adds the activation script to
 # the .bashrc file
 
+help () {
+    echo "usage: ./install.bash [--install-vim] [--install-tmux]"
+}
+
+install_vim=0
+install_tmux=0
+
+while test $# -gt 0
+do
+    case "$1" in
+        --install-vim ) install_vim=1
+                        ;;
+        --install-tmux ) install_tmux=1
+                        ;;
+        -h | --help ) help
+                      exit 1
+                        ;;
+    esac
+    shift
+done
+
+
 MAIN_DIRECTORY="$HOME/.dotfiles"
 MAIN_FILENAME="$MAIN_DIRECTORY/.activate"
 BASH_FILE="$HOME/.bashrc"
@@ -43,24 +65,30 @@ echo ". $MAIN_FILENAME" >> "$BASH_FILE"
 echo '### END dotfiles MANAGED SECTION' >> "$BASH_FILE"
 
 ### Vim Config
-# Install vim config
-echo "Installing awesome vim config"
-git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
-sh ~/.vim_runtime/install_awesome_vimrc.sh
+if [ "$install_vim" = "1" ]; then
+    # Install vim config
+    echo "Installing awesome vim config"
+    git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+    sh ~/.vim_runtime/install_awesome_vimrc.sh
 
-# Add custom vim config
-echo "Installing custom vim config"
-cp configs/vim_config.vim ~/.vim_runtime/my_configs.vim
+    # Add custom vim config
+    echo "Installing custom vim config"
+    cp configs/vim_config.vim ~/.vim_runtime/my_configs.vim
+fi
+
 
 ### tmux Config
-# Install tmux plugin manager
-echo "Installing tmux plugin manager"
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ "$install_tmux" = "1" ]; then
 
-# Add tmux config file
-echo "Installing tmux config file"
-cp configs/tmux.conf ~/.tmux.conf
+    # Install tmux plugin manager
+    echo "Installing tmux plugin manager"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-# Install tmux plugins
-echo "Installing tmux plugins"
-bash ~/.tmux/plugins/tpm/bin/install_plugins
+    # Add tmux config file
+    echo "Installing tmux config file"
+    cp configs/tmux.conf ~/.tmux.conf
+
+    # Install tmux plugins
+    echo "Installing tmux plugins"
+    bash ~/.tmux/plugins/tpm/bin/install_plugins
+fi

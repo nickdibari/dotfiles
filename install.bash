@@ -27,7 +27,7 @@ do
         --install-tmux ) install_tmux=1
                         ;;
         -h | --help ) help
-                      exit 1
+                      exit 0
                         ;;
     esac
     shift

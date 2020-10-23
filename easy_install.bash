@@ -3,7 +3,6 @@ set -euo pipefail
 
 # easy_install.bash
 # Fetches the dotfiles from remote source and installs them into the users home directory
-# and adds the activation script to the .bashrc file
 
 help() {
     echo <<HELP "usage: ./easy_install.bash [--install-vim] [--install-tmux]
@@ -53,6 +52,9 @@ fi
 mkdir "$DOTFILES_DIR"
 touch "$DOTFILES_ACTIVATION"
 
+# List of dotfiles to fetch and install on the host
+# Should be in the form of "$url,$filename" where $filename is the name of the file that will be written
+# to the $DOTFILES_DIR directory
 DOTFILES=("https://raw.githubusercontent.com/nickdibari/dotfiles/master/dotfiles/aliases/common.sh,common.sh"
 "https://raw.githubusercontent.com/nickdibari/dotfiles/master/dotfiles/git_prompts/git-completion.bash,git-completion.bash"
 "https://raw.githubusercontent.com/nickdibari/dotfiles/master/dotfiles/git_prompts/git-prompt.sh,git-prompt.sh"

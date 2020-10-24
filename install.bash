@@ -33,31 +33,32 @@ do
     shift
 done
 
-MAIN_DIRECTORY="$HOME/.dotfiles"
-MAIN_FILENAME="$MAIN_DIRECTORY/.activate"
+DOTFILES_SRC="$(dirname "$(readlink -f "$0")")"
+DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
 BASH_FILE="$HOME/.bashrc"
 
-if [[ -d "$MAIN_DIRECTORY" ]]; then
+if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Clearing old install.."
-    rm -rf "$MAIN_DIRECTORY"
+    rm -rf "$DOTFILES_DIR"
 fi
 
-mkdir "$MAIN_DIRECTORY"
-touch "$MAIN_FILENAME"
+mkdir "$DOTFILES_DIR"
+touch "$DOTFILES_ACTIVATION"
 
-dotfiles_dirs=$( ls "dotfiles")
+dotfiles_dirs=$( ls "$DOTFILES_SRC/dotfiles")
 
 for dir in $dotfiles_dirs; do
-    dotfiles=$(ls dotfiles/"$dir")
+    dotfiles=$(ls "$DOTFILES_SRC/dotfiles/$dir")
 
     for file in $dotfiles; do
-        filename="dotfiles/$dir/$file"
+        filename="$DOTFILES_SRC/dotfiles/$dir/$file"
 
-        cp "$filename" "$MAIN_DIRECTORY"
-        new_filename="$MAIN_DIRECTORY/$file"
+        cp "$filename" "$DOTFILES_DIR"
+        new_filename="$DOTFILES_DIR/$file"
 
-        echo "Appending $new_filename to $MAIN_FILENAME"
-        echo ". $new_filename" >> "$MAIN_FILENAME"
+        echo "Appending $new_filename to $DOTFILES_ACTIVATION"
+        echo ". $new_filename" >> "$DOTFILES_ACTIVATION"
     done
 done
 
@@ -65,15 +66,15 @@ echo "Copying your $BASH_FILE file to /tmp in case of revert"
 cp "${BASH_FILE}" /tmp/bashrc.bak
 
 if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
-    echo "Adding source of $MAIN_FILENAME to $BASH_FILE"
+    echo "Adding source of $DOTFILES_ACTIVATION to $BASH_FILE"
     {
         echo ""
         echo "### BEGIN dotfiles MANAGED SECTION"
-        echo ". $MAIN_FILENAME"
+        echo ". $DOTFILES_ACTIVATION"
         echo '### END dotfiles MANAGED SECTION'
     } >> "$BASH_FILE"
 else
-    echo "Already have source of $MAIN_FILENAME in $BASH_FILE"
+    echo "Already have source of $DOTFILES_ACTIVATION in $BASH_FILE"
 fi
 
 ### Vim Config
@@ -91,7 +92,7 @@ if [ "$install_vim" = "1" ]; then
 
     # Add custom vim config
     echo "Installing custom vim config"
-    cp configs/vim_config.vim "$VIM_DIR/my_configs.vim"
+    cp "$DOTFILES_SRC/configs/vim_config.vim" "$VIM_DIR/my_configs.vim"
 fi
 
 
@@ -109,7 +110,7 @@ if [ "$install_tmux" = "1" ]; then
 
     # Add tmux config file
     echo "Installing tmux config file"
-    cp configs/tmux.conf ~/.tmux.conf
+    cp "$DOTFILES_SRC/configs/tmux.conf" ~/.tmux.conf
 
     # Install tmux plugins
     echo "Installing tmux plugins"

@@ -6,11 +6,7 @@ set -euo pipefail
 
 help() {
     echo <<HELP "usage: ./easy_install.bash [--install-vim] [--install-tmux]
-Downloads and installs dotfile configs to \$HOME/.bashrc
-
---install-vim   Install vim plugins and config files
---install-tmux  Install tmux plugins and config files
-    -> Needs tmux to be installed on host
+Downloads and installs dotfile/vim/tmux configs to \$HOME/.bashrc
 "
 HELP
 }
@@ -22,23 +18,6 @@ fetch_dotfile() {
     echo "Making request to fetch $url"
     curl "$url" -s -o "$filename"
 }
-
-install_vim=0
-install_tmux=0
-
-while test $# -gt 0
-do
-    case "$1" in
-        --install-vim ) install_vim=1
-                        ;;
-        --install-tmux ) install_tmux=1
-                        ;;
-        -h | --help ) help
-                      exit 0
-                        ;;
-    esac
-    shift
-done
 
 DOTFILES_DIR="$HOME/.dotfiles"
 DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
@@ -89,45 +68,40 @@ else
 fi
 
 ### Vim Config
-if [ "$install_vim" = "1" ]; then
-    VIM_DIR="$HOME/.vim_runtime"
-    VIM_CONFIG_URL="https://raw.githubusercontent.com/nickdibari/dotfiles/master/configs/vim_config.vim"
-    VIM_CONFIG_FILENAME="$VIM_DIR/my_configs.vim"
+VIM_DIR="$HOME/.vim_runtime"
+VIM_CONFIG_URL="https://raw.githubusercontent.com/nickdibari/dotfiles/master/configs/vim_config.vim"
+VIM_CONFIG_FILENAME="$VIM_DIR/my_configs.vim"
 
-    if [ ! -d "$VIM_DIR" ]; then
-        # Install vim config
-        echo "Installing awesome vim config"
-        git clone --depth=1 https://github.com/amix/vimrc.git "$VIM_DIR"
-        sh "$VIM_DIR/install_awesome_vimrc.sh"
-    else
-        echo "Awesome vim config already installed"
-    fi
-
-    # Add custom vim config
-    echo "Installing custom vim config"
-    fetch_dotfile "$VIM_CONFIG_URL" "$VIM_CONFIG_FILENAME"
+if [ ! -d "$VIM_DIR" ]; then
+    # Install vim config
+    echo "Installing awesome vim config"
+    git clone --depth=1 https://github.com/amix/vimrc.git "$VIM_DIR"
+    sh "$VIM_DIR/install_awesome_vimrc.sh"
+else
+    echo "Awesome vim config already installed"
 fi
 
+# Add custom vim config
+echo "Installing custom vim config"
+fetch_dotfile "$VIM_CONFIG_URL" "$VIM_CONFIG_FILENAME"
 
 ### tmux Config
-if [ "$install_tmux" = "1" ]; then
-    TMUX_PLUGIN_DIR="$HOME/.tmux/plugins/tpm"
-    TMUX_CONFIG_URL="https://raw.githubusercontent.com/nickdibari/dotfiles/master/configs/tmux.conf"
-    TMUX_CONFIG_FILENAME="$HOME/.tmux.conf"
+TMUX_PLUGIN_DIR="$HOME/.tmux/plugins/tpm"
+TMUX_CONFIG_URL="https://raw.githubusercontent.com/nickdibari/dotfiles/master/configs/tmux.conf"
+TMUX_CONFIG_FILENAME="$HOME/.tmux.conf"
 
-    if [ ! -d "$TMUX_PLUGIN_DIR" ]; then
-        # Install tmux plugin manager
-        echo "Installing tmux plugin manager"
-        git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_DIR"
-    else
-        echo "tmux plugin manager already installed"
-    fi
-
-    # Add tmux config file
-    echo "Installing tmux config file"
-    fetch_dotfile "$TMUX_CONFIG_URL" "$TMUX_CONFIG_FILENAME"
-
-    # Install tmux plugins
-    echo "Installing tmux plugins"
-    bash "$TMUX_PLUGIN_DIR/bin/install_plugins"
+if [ ! -d "$TMUX_PLUGIN_DIR" ]; then
+    # Install tmux plugin manager
+    echo "Installing tmux plugin manager"
+    git clone https://github.com/tmux-plugins/tpm "$TMUX_PLUGIN_DIR"
+else
+    echo "tmux plugin manager already installed"
 fi
+
+# Add tmux config file
+echo "Installing tmux config file"
+fetch_dotfile "$TMUX_CONFIG_URL" "$TMUX_CONFIG_FILENAME"
+
+# Install tmux plugins
+echo "Installing tmux plugins"
+bash "$TMUX_PLUGIN_DIR/bin/install_plugins"

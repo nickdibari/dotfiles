@@ -37,6 +37,22 @@ Optionally, you can also install the vim and tmux configs included in the reposi
 ./install.bash --install-vim --install-tmux
 ```
 
+## Configuring
+
+There are a few configuration options available for your dotfiles setup. You can optionally tweak the behavior of the dotfiles through this file.
+These configs should live in a file called `.dotfiles_config` in your home directory. The install scripts will add a line to your `.bashrc` file to load this file if it exists.
+
+The syntax for the file follows the env format for bash scripts, meaning the file should consist of lines in the `key=value` format. An example line for the config file could be
+
+`export config_key="value"`
+
+The options for the config file, including the required type, are:
+
+```
+user_prompt_color: (int) ANSI color for the current user in the prompt
+host_prompt_color: (int) ANSI color for the hostname in the prompt
+```
+
 ## Testing
 
 We use [vagrant](https://www.vagrantup.com/) for creating virtual machines to test the install script. This will give you a VM with the dotfiles repository linked to test install the dotfiles on a new machine. To boot the VM, install vagrant from their download page and boot the VM in the repository directory:

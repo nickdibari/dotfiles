@@ -5,7 +5,7 @@ set -euo pipefail
 # Fetches the dotfiles from remote source and installs them into the users home directory
 
 help() {
-    echo <<HELP "usage: ./easy_install.bash [--install-vim] [--install-tmux]
+    echo <<HELP "usage: ./easy_install.bash
 Downloads and installs dotfile/vim/tmux configs to \$HOME/.bashrc
 "
 HELP
@@ -20,6 +20,7 @@ fetch_dotfile() {
 }
 
 DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_CONFIG="$HOME/.dotfiles_config"
 DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
 BASH_FILE="$HOME/.bashrc"
 
@@ -60,6 +61,7 @@ if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
     {
         echo ""
         echo "### BEGIN dotfiles MANAGED SECTION"
+        echo "[ -f $DOTFILES_CONFIG ] && . $DOTFILES_CONFIG"
         echo ". $DOTFILES_ACTIVATION"
         echo '### END dotfiles MANAGED SECTION'
     } >> "$BASH_FILE"

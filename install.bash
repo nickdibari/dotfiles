@@ -6,11 +6,9 @@ set -euo pipefail
 # the .bashrc file
 
 help () {
-    echo <<HELP "usage: ./install.bash [--host-prompt-color HOST_PROMPT_COLOR] [--user-prompt-color USER_PROMPT_COLOR] [--install-vim] [--install-tmux]
+    echo <<HELP "usage: ./install.bash [--install-vim] [--install-tmux]
 Installs dotfile configs to \$HOME/.bashrc
 
---host-prompt-color Optional override for hostname color in PS1
---user-prompt-color Optional override for username color in PS1
 --install-vim   Install vim plugins and config files
 --install-tmux  Install tmux plugins and config files
     -> Needs tmux to be installed on host
@@ -20,8 +18,6 @@ HELP
 
 install_vim=0
 install_tmux=0
-host_prompt_color=
-user_prompt_color=
 
 while test $# -gt 0
 do
@@ -29,14 +25,6 @@ do
         --install-vim ) install_vim=1
                         ;;
         --install-tmux ) install_tmux=1
-                        ;;
-        --host-prompt-color )
-                        shift
-                        host_prompt_color="$1"
-                        ;;
-        --user-prompt-color )
-                        shift
-                        user_prompt_color="$1"
                         ;;
         -h | --help ) help
                       exit 0
@@ -47,6 +35,7 @@ done
 
 DOTFILES_SRC="$(dirname "$(readlink -f "$0")")"
 DOTFILES_DIR="$HOME/.dotfiles"
+DOTFILES_CONFIG="$HOME/.dotfiles_config"
 DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
 BASH_FILE="$HOME/.bashrc"
 
@@ -82,8 +71,7 @@ if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
     {
         echo ""
         echo "### BEGIN dotfiles MANAGED SECTION"
-        echo "export host_prompt_color=$host_prompt_color"
-        echo "export user_prompt_color=$user_prompt_color"
+        echo "[ -f $DOTFILES_CONFIG ] && . $DOTFILES_CONFIG"
         echo ". $DOTFILES_ACTIVATION"
         echo '### END dotfiles MANAGED SECTION'
     } >> "$BASH_FILE"

@@ -4,13 +4,6 @@ set -euo pipefail
 # easy_install.bash
 # Fetches the dotfiles from remote source and installs them into the users home directory
 
-help() {
-    echo <<HELP "usage: ./easy_install.bash
-Downloads and installs dotfile/vim/tmux configs to \$HOME/.bashrc
-"
-HELP
-}
-
 fetch_dotfile() {
     url="$1"
     filename="$2"
@@ -53,8 +46,10 @@ do
     echo ". $full_filename" >> "$DOTFILES_ACTIVATION"
 done
 
-echo "Copying your $BASH_FILE file to /tmp in case of revert"
-cp "${BASH_FILE}" /tmp/bashrc.bak
+if [ ! -d "$BASH_FILE" ]; then
+    echo "Copying your $BASH_FILE file to /tmp in case of revert"
+    cp "${BASH_FILE}" /tmp/bashrc.bak
+fi
 
 if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
     echo "Adding source of $DOTFILES_ACTIVATION to $BASH_FILE"

@@ -6,7 +6,7 @@ set -euo pipefail
 # the .bashrc file
 
 help () {
-    echo <<HELP "usage: ./install.bash [--install-vim] [--install-tmux]
+    cat <<HELP "usage: ./install.bash [--install-vim] [--install-tmux]
 Installs dotfile configs to \$HOME/.bashrc
 
 --install-vim   Install vim plugins and config files
@@ -63,8 +63,10 @@ for dir in $dotfiles_dirs; do
     done
 done
 
-echo "Copying your $BASH_FILE file to /tmp in case of revert"
-cp "${BASH_FILE}" /tmp/bashrc.bak
+if [ ! -d "$BASH_FILE" ]; then
+    echo "Copying your $BASH_FILE file to /tmp in case of revert"
+    cp "${BASH_FILE}" /tmp/bashrc.bak
+fi
 
 if ! grep -qse "### BEGIN dotfiles MANAGED SECTION" "$BASH_FILE"; then
     echo "Adding source of $DOTFILES_ACTIVATION to $BASH_FILE"

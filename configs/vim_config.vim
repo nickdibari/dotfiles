@@ -2,4 +2,4 @@
 autocmd BufWritePre * :%s/\s\+$//e
 
 " Add command for writing files with `sudo`
-command W :execute ':silent W !sudo tee "%" > /dev/null' | :edit!
+command! W :execute ':silent W !sudo tee "%" > /dev/null' | :edit!

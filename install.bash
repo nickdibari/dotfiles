@@ -3,16 +3,16 @@ set -euo pipefail
 
 # install.bash
 # Installs the dotfiles into the users home directory and adds the activation script to
-# the .bashrc file
+# the config file sourced by bash on the installation platform
 
 help () {
-    cat <<HELP "usage: ./install.bash [--install-vim] [--install-tmux]
-Installs dotfile configs to \$HOME/.bashrc
+    cat << HELP
+usage: ./install.bash [--install-vim] [--install-tmux]
+Installs dotfile configs to the config file sourced by bash on the installation platform
 
 --install-vim   Install vim plugins and config files
 --install-tmux  Install tmux plugins and config files
     -> Needs tmux to be installed on host
-"
 HELP
 }
 
@@ -37,7 +37,16 @@ DOTFILES_SRC="$(dirname "$(readlink -f "$0")")"
 DOTFILES_DIR="$HOME/.dotfiles"
 DOTFILES_CONFIG="$HOME/.dotfiles_config"
 DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
-BASH_FILE="$HOME/.bashrc"
+
+case "$OSTYPE" in
+    linux-*)
+    BASH_FILE="$HOME/.bashrc"
+    ;;
+
+    darwin*)
+    BASH_FILE="$HOME/.profile"
+    ;;
+esac
 
 if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Clearing old install.."

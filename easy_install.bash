@@ -15,7 +15,16 @@ fetch_dotfile() {
 DOTFILES_DIR="$HOME/.dotfiles"
 DOTFILES_CONFIG="$HOME/.dotfiles_config"
 DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
-BASH_FILE="$HOME/.bashrc"
+
+case "$OSTYPE" in
+    linux-*)
+    BASH_FILE="$HOME/.bashrc"
+    ;;
+
+    darwin*)
+    BASH_FILE="$HOME/.profile"
+    ;;
+esac
 
 if [[ -d "$DOTFILES_DIR" ]]; then
     echo "Clearing old install.."

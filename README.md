@@ -37,6 +37,10 @@ Optionally, you can also install the vim and tmux configs included in the reposi
 ./install.bash --install-vim --install-tmux
 ```
 
+## Upgrading
+
+If the install was done through a checkout of the respository, then upgrading the dotfiles is as simple as pulling down the latest changes from the remote and sourcing the bash profile again. If new dotfiles are added, then you will need to install again to create the links from your system to the dotfiles checkout.
+
 ## Configuring
 
 There are a few configuration options available for your dotfiles setup. You can optionally tweak the behavior of the dotfiles through this file.

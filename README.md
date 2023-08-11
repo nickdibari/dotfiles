@@ -51,6 +51,7 @@ The options for the config file, including the required type, are:
 ```
 user_prompt_color: (int) ANSI color for the current user in the prompt
 host_prompt_color: (int) ANSI color for the hostname in the prompt
+hostname:          (str) Hostname to use in prompt (defaults to `hostname`)
 ```
 
 ## Testing

@@ -55,7 +55,7 @@ do
     echo ". $full_filename" >> "$DOTFILES_ACTIVATION"
 done
 
-if [ ! -d "$BASH_FILE" ]; then
+if [[ -f "$BASH_FILE" ]]; then
     echo "Copying your $BASH_FILE file to /tmp in case of revert"
     cp "${BASH_FILE}" /tmp/bashrc.bak
 fi

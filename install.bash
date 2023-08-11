@@ -72,7 +72,7 @@ for dir in $dotfiles_dirs; do
     done
 done
 
-if [ ! -d "$BASH_FILE" ]; then
+if [[ -f "$BASH_FILE" ]]; then
     echo "Copying your $BASH_FILE file to /tmp in case of revert"
     cp "${BASH_FILE}" /tmp/bashrc.bak
 fi

@@ -2,13 +2,13 @@
 
 HCOLOR=${host_prompt_color:-33}
 UCOLOR=${user_prompt_color:-32}
-HOST=${hostname:$(hostname)}
+COMPNAME=${hostname:-$(hostname)}
 
 # Jeremy's color and screen and graphical term naming prompt
 case "$TERM" in
     xterm*|rxvt*|screen)
-        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;${UCOLOR}m\]\u@\[\033[01;${HCOLOR}m\]${HOST}\[\033[00m\]:\!:\[\033[00m\]\$'
-        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@${HOST}: \w\a\]$PS1"
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;${UCOLOR}m\]\u@\[\033[01;${HCOLOR}m\]${COMPNAME}\[\033[00m\]:\!:\[\033[00m\]\$'
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@${COMPNAME}: \w\a\]$PS1"
         [ $TERM == "screen" ] && export PS1="\[\033k\033\134\033k\H\033\134\]$PS1"
         PS1="\[\033[00;37m\][\T]:\[\033[00;36m\]\w\$(__git_ps1)\n$PS1 "
         ;;

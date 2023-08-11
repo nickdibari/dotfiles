@@ -34,9 +34,8 @@ do
 done
 
 DOTFILES_SRC="$(dirname "$(readlink -f "$0")")"
-DOTFILES_DIR="$HOME/.dotfiles"
 DOTFILES_CONFIG="$HOME/.dotfiles_config"
-DOTFILES_ACTIVATION="$DOTFILES_DIR/.activate"
+DOTFILES_ACTIVATION="$HOME/.activate"
 
 case "$OSTYPE" in
     linux-*)
@@ -48,12 +47,6 @@ case "$OSTYPE" in
     ;;
 esac
 
-if [[ -d "$DOTFILES_DIR" ]]; then
-    echo "Clearing old install.."
-    rm -rf "$DOTFILES_DIR"
-fi
-
-mkdir "$DOTFILES_DIR"
 touch "$DOTFILES_ACTIVATION"
 
 dotfiles_dirs=$( ls "$DOTFILES_SRC/dotfiles")
@@ -64,11 +57,8 @@ for dir in $dotfiles_dirs; do
     for file in $dotfiles; do
         filename="$DOTFILES_SRC/dotfiles/$dir/$file"
 
-        cp "$filename" "$DOTFILES_DIR"
-        new_filename="$DOTFILES_DIR/$file"
-
-        echo "Appending $new_filename to $DOTFILES_ACTIVATION"
-        echo ". $new_filename" >> "$DOTFILES_ACTIVATION"
+        echo "Appending $filename to $DOTFILES_ACTIVATION"
+        echo ". $filename" >> "$DOTFILES_ACTIVATION"
     done
 done
 
@@ -105,7 +95,7 @@ if [ "$install_vim" = "1" ]; then
 
     # Add custom vim config
     echo "Installing custom vim config"
-    cp "$DOTFILES_SRC/configs/vim_config.vim" "$VIM_DIR/my_configs.vim"
+    ln -sf "$DOTFILES_SRC/configs/vim_config.vim" "$VIM_DIR/my_configs.vim"
 fi
 
 
@@ -123,7 +113,7 @@ if [ "$install_tmux" = "1" ]; then
 
     # Add tmux config file
     echo "Installing tmux config file"
-    cp "$DOTFILES_SRC/configs/tmux.conf" ~/.tmux.conf
+    ln -sf "$DOTFILES_SRC/configs/tmux.conf" ~/.tmux.conf
 
     # Install tmux plugins
     echo "Installing tmux plugins"

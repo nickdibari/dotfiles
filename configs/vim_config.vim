@@ -18,3 +18,9 @@ let g:NERDTreeIgnore = ["^bazel-*","^\.git$","\.DS_Store","^\.vagrant"]
 
 " Show hidden files in NERDTree explorer
 let g:NERDTreeShowHidden = 1
+
+" Set my favorite colorscheme
+colorscheme gruvbox
+
+" Enable spellcheck
+set spell spelllang=en_us
